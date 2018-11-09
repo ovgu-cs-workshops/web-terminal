@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "es2015",
+    "baseUrl": "./",
+    "target": "esnext",
+    "typeRoots": [
+      "node_modules/@types",
+      "src/@types"
+    ],
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@app/*": [
+        "src/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@styles/*": [
+        "src/styles/*"
+      ],
+      "@public/*": [
+        "public/*"
+      ],
+      "@assets/*": [
+        "public/assets/*"
+      ]
+    },
+    "jsx": "react",
+    "jsxFactory": "h",
+    "lib": [
+      "es2017",
+      "dom",
+      "es2015.generator",
+      "es2015.iterable",
+      "es2015.promise",
+      "es2015.symbol",
+      "es2015.symbol.wellknown",
+      "esnext.asynciterable"
+    ]
+  }
+}
