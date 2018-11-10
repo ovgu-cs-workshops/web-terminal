@@ -31,6 +31,12 @@ export const actions = (store: Store<State>) => ({
       connState: EConnectionState.Connecting,
     });
     try {
+      let resolve = null;
+      const p = new Promise(r => {
+        resolve = r;
+      });
+      setTimeout(resolve, 30000);
+      await p;
       const details = await connection.Open()
       connection.OnClose().then((closeInfo) => {
         store.setState({
@@ -50,7 +56,7 @@ export const actions = (store: Store<State>) => ({
       store.setState({
         ...state,
         connState: EConnectionState.Error,
-        errorMessage: `Failed to connect to server: ${e.toString()}`,
+        errorMessage: `Server unreachable: ${e.toString()}`,
       });
     }
   },

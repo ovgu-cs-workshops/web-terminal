@@ -19,9 +19,14 @@ export interface Actions {
   connect (username: string): void
 }
 
-export interface Counter {
+export interface ConnState {
   connect (username: string): void;
   connState: EConnectionState;
+}
+
+export interface MainConnState {
+  connState: EConnectionState;
+  errorMessage?: string;
 }
 
 export interface Label {
@@ -29,7 +34,6 @@ export interface Label {
 }
 
 export interface Button {
-  label: string;
   disabled?: boolean;
   action: () => void;
 }
