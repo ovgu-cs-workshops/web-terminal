@@ -14,7 +14,12 @@ const App = connect<{}, State & Actions, State & Actions>(x => x, actions)(
   (props: State & Actions) =>
   <div class="layout">
     <TopBarComponent connect={props.connect} connState={props.connState} />
-    <MainComponent connState={props.connState} errorMessage={props.errorMessage} />
+    <MainComponent
+      connState={props.connState}
+      errorMessage={props.errorMessage}
+      instance={props.instanceid}
+      connection={props.connection}
+      resetConn={props.resetConn} />
   </div>
 )
 

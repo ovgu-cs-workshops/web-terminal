@@ -17,6 +17,7 @@ export interface State {
 
 export interface Actions {
   connect (username: string): void
+  resetConn (): void
 }
 
 export interface ConnState {
@@ -25,8 +26,11 @@ export interface ConnState {
 }
 
 export interface MainConnState {
+  connection: Connection;
   connState: EConnectionState;
   errorMessage?: string;
+  instance: string;
+  resetConn: () => void;
 }
 
 export interface Label {

@@ -16,7 +16,7 @@ export const store = process.env.NODE_ENV === 'production' ?
   createStore(initialState) : devtools(createStore(initialState))
 
 export const actions = (store: Store<State>) => ({
-  async connect (state: State, username: string) {
+  connect: async (state: State, username: string) => {
     const connection = new Connection({
       endpoint: "ws://localhost:4000",
       realm: "gittalk",
@@ -35,21 +35,20 @@ export const actions = (store: Store<State>) => ({
       const p = new Promise(r => {
         resolve = r;
       });
-      setTimeout(resolve, 30000);
+      setTimeout(resolve, 1000);
       await p;
       const details = await connection.Open()
       connection.OnClose().then((closeInfo) => {
         store.setState({
           ...state,
-          connState: EConnectionState.Error,
-          errorMessage: `Connection to server lost: ${closeInfo.reason}`,
+          connState: EConnectionState.Disconnected,
         });
       });
       store.setState({
         ...state,
         connState: EConnectionState.Connected,
         username: details.authid || username,
-        instanceid: (details.authextra || {})["instanceid"] || null,
+        instanceid: (details.authextra || {})["containerid"] || null,
         connection: connection,
       });
     } catch (e) {
@@ -59,5 +58,16 @@ export const actions = (store: Store<State>) => ({
         errorMessage: `Server unreachable: ${e.toString()}`,
       });
     }
+  },
+  resetConn: (state: State) => {
+    state.connection.Close();
+    store.setState({
+      ...state,
+      connection: null,
+      instanceid: null,
+      username: null,
+      connState: EConnectionState.Disconnected,
+      errorMessage: null,
+    });
   },
 });

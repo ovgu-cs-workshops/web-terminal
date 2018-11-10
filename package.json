@@ -11,12 +11,13 @@
     "prestart": "npm run clean",
     "start": "webpack-dev-server --mode development",
     "prebuild": "npm run clean",
-    "build": "env NODE_ENV=production webpack",
+    "build": "env NODE_ENV=production webpack --stats-json",
     "lint": "tslint --format stylish --project tsconfig.json"
   },
   "devDependencies": {
     "@types/node": "^10.9.4",
-    "@verkehrsministerium/kraftfahrstrasse": "0.0.10",
+    "@types/text-encoding": "0.0.34",
+    "@verkehrsministerium/kraftfahrstrasse": "0.0.11",
     "autoprefixer": "^9.0.0",
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^1.0.1",
