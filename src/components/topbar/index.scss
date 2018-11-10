@@ -1,0 +1,16 @@
+div.hbox {
+  width: 70%;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: baseline;
+  flex: 0 0 auto;
+}
+
+div.input-field {
+  flex: 1 0 auto;
+}
+
+button.btn {
+  margin: auto 1em;
+}

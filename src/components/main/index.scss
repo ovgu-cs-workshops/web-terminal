@@ -1,0 +1,16 @@
+div.message {
+  width: 70%;
+  margin: 1em auto;
+  display: flex;
+  flex: 1 0 auto;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+span.hw {
+  font-size: 2.5rem;
+  i.material-icons {
+    color: lightgray;
+    font-size: 8rem;
+  }
+}
