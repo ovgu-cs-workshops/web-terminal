@@ -1,52 +1,33 @@
-# Preact Starter [![Build Status](https://travis-ci.org/joseluisq/preact-starter.svg?branch=master)](https://travis-ci.org/joseluisq/preact-starter) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+# Web Terminal Frontend
 
-> Minimal [Preact](https://preactjs.com), [Typescript](https://www.typescriptlang.org/) and [Parcel](https://en.parceljs.org) starter. :package::rocket::tada:
+This repository contains a simple web terminal based on:
 
-## Features
+- [preact](https://github.com/developit/preact)
+- [unistore](https://github.com/developit/unistore)
+- [Sass](https://github.com/sass/node-sass)
+- [Typescript](https://www.typescriptlang.org/)
+- [Webpack 4](https://webpack.js.org/)
+- [WAMP](https://wamp-proto.org/)
+- [cmanager](https://github.com/ovgu-cs-workshops/cmanager)
+- [git-userland](https://github.com/ovgu-cs-workshops/git-userland)
+- [autobahnkreuz](https://github.com/EmbeddedEnterprises/autobahnkreuz)
 
-- [x] [Typescript](https://www.typescriptlang.org/) with TSX
-- [x] [Parcel](https://github.com/parcel-bundler/parcel) bundler
-- [x] [CSS/Sass/SCSS](https://github.com/sass/node-sass) support
-- [x] [PostCSS with Autoprefixer](https://github.com/postcss/autoprefixer)
-- [ ] [Jest](http://jestjs.io/) testing with [Typescript support](https://github.com/kulshekhar/ts-jest)
-- [x] [TSLint](https://github.com/palantir/tslint) with [Standard Plus](https://github.com/joseluisq/tslint-config-standard-plus) rules
-- [x] [VS Code User Workspace](https://code.visualstudio.com/docs/getstarted/settings) pre-configured and ready to use
+This project is based on the awesome [joseluisq/preact-starter project](https://github.com/joseluisq/preact-starter)
 
-## Demo
-???
-
-## Usage
-
-Just clone the repository and install the dependencies:
+## Building
 
 ```sh
-git clone --depth 1 https://github.com/joseluisq/preact-starter.git
-yarn
+$ npm install # (you might use npm ci if you use an up-to-date npm)
+$ npm run build
 ```
 
-### Development
+- Afterwards, a bundle should be produced in `dist` which you can use in a docker image etc.
 
-```
-yarn start
-```
+## Development
 
-### Production
-
-```
-yarn build
+```sh
+$ npm install # (you might use npm ci)
+$ npm run start
 ```
 
-### Testing
-
-```
-yarn test
-```
-
-## Contributions
-
-Feel free to send some [Pull request](https://github.com/joseluisq/preact-starter/pulls) or [issue](https://github.com/joseluisq/preact-starter/issues).
-
-## License
-MIT license
-
-© 2018 [José Luis Quintana](http://git.io/joseluisq)
+This will launch the standard webpack-dev-server.

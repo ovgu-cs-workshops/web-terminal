@@ -1,6 +1,7 @@
 MIT License
 
 Copyright (c) 2018 joseluisq
+Copyright (c) 2018 Martin Koppehel <martin@embedded.enterprises>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
