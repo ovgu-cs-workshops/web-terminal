@@ -31,3 +31,11 @@ $ npm run start
 ```
 
 This will launch the standard webpack-dev-server.
+
+## Deployment
+
+Build a version with your endpoint in your env variables.
+
+```sh
+$ ENDPOINT="wss://test.foo.bar" npm run build
+```
