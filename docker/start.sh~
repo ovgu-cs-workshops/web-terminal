@@ -1,0 +1,4 @@
+#! /bin/sh
+
+sed -i "s;ws://localhost:4000;ws://localhost:${PORT};g" /usr/share/nginx/html/app.bundle.js
+nginx -g "daemon off;"

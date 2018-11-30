@@ -1,5 +1,5 @@
 FROM node:11 as builder
-  
+
 WORKDIR /
 RUN git clone https://github.com/ovgu-cs-workshops/web-terminal.git web-terminal
 WORKDIR web-terminal
@@ -12,3 +12,7 @@ FROM nginx:latest
 ARG configuration=production
 COPY --from=builder /web-terminal/dist/ /usr/share/nginx/html
 
+ADD ./docker/start.sh /usr/bin
+RUN chmod +x /usr/bin/start.sh
+
+CMD ["/usr/bin/start.sh"]
