@@ -22,7 +22,6 @@ export class TerminalComponent extends Component<{instance: string, connection: 
   }
 
   componentDidMount() {
-    debugger;
     // Bootstrap the terminal
     const elem = document.querySelector('#terminal') as HTMLDivElement;
     const isFF = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;

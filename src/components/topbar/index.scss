@@ -9,8 +9,13 @@ div.hbox {
 
 div.input-field {
   flex: 1 0 auto;
+  color: rgba(0, 0, 0, 0.87);
 }
 
 button.btn {
   margin: auto 1em;
+}
+
+input {
+  color: rgba(0, 0, 0, 0.87);
 }
