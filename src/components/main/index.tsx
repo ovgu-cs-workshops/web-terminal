@@ -2,6 +2,10 @@ import { Component, h } from 'preact';
 import { Terminal } from 'xterm';
 import { Connection, ISubscription } from '@verkehrsministerium/kraftfahrstrasse';
 import { MainConnState, EConnectionState } from '@app/types';
+import * as WebfontLoader from 'xterm-webfont';
+
+Terminal.applyAddon(WebfontLoader);
+
 import './index.scss';
 
 export class TerminalComponent extends Component<{instance: string, connection: Connection, resetConn: () => void }, {
@@ -18,23 +22,29 @@ export class TerminalComponent extends Component<{instance: string, connection: 
   }
 
   componentDidMount() {
+    debugger;
     // Bootstrap the terminal
     const elem = document.querySelector('#terminal') as HTMLDivElement;
-    const terminal = new Terminal();
-    terminal.open(elem);
-    (terminal as any).fit();
-
-    // Update the state
-    this.setState({
-      ...this.state,
-      decoder: new (window as any).TextDecoder(),
-      encoder: new (window as any).TextEncoder(),
-      id: Math.random().toString(36).substring(7),
-      term: terminal,
+    const isFF = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+    const terminal = new Terminal({
+      fontFamily: 'Hack',
+      rendererType: isFF ? 'dom': 'canvas',
     });
 
     // Subscribe to the topics
     (async () => {
+      await (terminal as any).loadWebfontAndOpen(elem);
+      (terminal as any).fit();
+
+      // Update the state
+      this.setState({
+        ...this.state,
+        decoder: new (window as any).TextDecoder(),
+        encoder: new (window as any).TextEncoder(),
+        id: Math.random().toString(36).substring(7),
+        term: terminal,
+      });
+
       const baseUrl = `rocks.git.tui.${this.props.instance}.${this.state.id}.`;
       const outSub = await this.props.connection.Subscribe(baseUrl+'out', (a: [ArrayBuffer]) => {
         const data = this.state.decoder.decode(a[0], {stream: true});
@@ -78,7 +88,9 @@ export class TerminalComponent extends Component<{instance: string, connection: 
     })().catch((err) => {
       console.log('Failed to unsubscribe from out/exit:', err);
     });
-    this.state.term.destroy();
+    if (!!this.state.term) {
+      this.state.term.destroy();
+    }
   }
 }
 
