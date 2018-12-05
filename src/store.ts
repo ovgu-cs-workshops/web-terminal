@@ -18,7 +18,7 @@ export const store = process.env.NODE_ENV === 'production' ?
 export const actions = (store: Store<State>) => ({
   connect: async (state: State, username: string) => {
     const connection = new Connection({
-      endpoint: "ws://localhost:4000",
+      endpoint: "ws://localhost:6032",
       realm: "gittalk",
       serializer: new BrowserMSGPackSerializer(),
       transport: BrowserWebSocketTransport,

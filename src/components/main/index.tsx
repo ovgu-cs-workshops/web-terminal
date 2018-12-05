@@ -24,10 +24,9 @@ export class TerminalComponent extends Component<{instance: string, connection: 
   componentDidMount() {
     // Bootstrap the terminal
     const elem = document.querySelector('#terminal') as HTMLDivElement;
-    const isFF = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
     const terminal = new Terminal({
       fontFamily: 'Hack',
-      rendererType: isFF ? 'dom': 'canvas',
+      rendererType: 'dom',
     });
 
     // Subscribe to the topics
