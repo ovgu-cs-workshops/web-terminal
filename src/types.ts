@@ -12,6 +12,7 @@ export interface State {
   username: string | null,
   instanceid: string | null,
   connection: Connection | null,
+  message: string[],
   errorMessage: string | null,
 }
 
@@ -29,6 +30,7 @@ export interface MainConnState {
   connection: Connection;
   connState: EConnectionState;
   errorMessage?: string;
+  message: string[];
   instance: string;
   resetConn: () => void;
 }

@@ -19,12 +19,13 @@ const App = connect<{}, State & Actions, State & Actions>(x => x, actions)(
       errorMessage={props.errorMessage}
       instance={props.instanceid}
       connection={props.connection}
+      message={props.message}
       resetConn={props.resetConn} />
   </div>
-)
+);
 
 export default () => (
   <Provider store={store}>
       <App />
   </Provider>
-)
+);

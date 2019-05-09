@@ -93,7 +93,7 @@ export class TerminalComponent extends Component<{instance: string, connection: 
 }
 
 export class MainComponent extends Component<MainConnState> {
-  render({ connState, errorMessage, connection, instance, resetConn }: MainConnState) {
+  render({ connState, errorMessage, connection, instance, resetConn, message }: MainConnState) {
     switch (connState) {
       case EConnectionState.Disconnected:
       return <div class="message">
@@ -102,11 +102,13 @@ export class MainComponent extends Component<MainConnState> {
         </div>
       case EConnectionState.Connecting:
         return <div class="message">
-          <span class="hw"><i class="material-icons">link</i></span>
-          <span class="hw">Connecting to server...</span>
           <div class="progress">
             <div class="indeterminate"></div>
           </div>
+          <span class="hw"><i class="material-icons">link</i></span>
+            {message.map(value => {
+              return <span class="hw">{value}</span>
+            })}
         </div>
       case EConnectionState.Connected:
         return <TerminalComponent connection={connection} instance={instance} resetConn={resetConn} />
