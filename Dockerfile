@@ -1,13 +1,14 @@
-FROM node:11 as builder
+FROM node:11-alpine as builder
 
-WORKDIR /
-RUN git clone https://github.com/ovgu-cs-workshops/web-terminal.git web-terminal
-WORKDIR web-terminal
+WORKDIR /web-terminal
 
+ADD package.json /web-terminal/package.json
+ADD package-lock.json /web-terminal/package-lock.json
 RUN npm ci
+ADD . /web-terminal/
 RUN npm run build
 
-FROM nginx:latest
+FROM nginx:1.16-alpine
 
 ARG configuration=production
 COPY --from=builder /web-terminal/dist/ /usr/share/nginx/html
