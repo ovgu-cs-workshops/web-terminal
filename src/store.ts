@@ -1,7 +1,13 @@
-import createStore, { Store } from 'unistore'
-import devtools from 'unistore/devtools'
-import { State, EConnectionState } from '@app/types'
-import { Connection, BrowserWebSocketTransport, TicketAuthProvider, WampDict } from '@verkehrsministerium/kraftfahrstrasse';
+import createStore, { Store } from 'unistore';
+import devtools from 'unistore/devtools';
+
+import { EConnectionState, State } from '@app/types';
+import {
+  BrowserWebSocketTransport,
+  Connection,
+  TicketAuthProvider,
+  WampDict,
+} from '@verkehrsministerium/kraftfahrstrasse';
 import { BrowserMSGPackSerializer } from '@verkehrsministerium/kraftfahrstrasse/build/module/serialize/BrowserMSGPack';
 
 const initialState: State = {
@@ -14,62 +20,61 @@ const initialState: State = {
 };
 
 export const store = process.env.NODE_ENV === 'production' ?
-  createStore(initialState) : devtools(createStore(initialState))
+  createStore(initialState) : devtools(createStore(initialState));
 
-export const actions = (store: Store<State>) => ({
+export const actions = (localStore: Store<State>) => ({
   connect: async (state: State, username: string) => {
     const connection = new Connection({
-      endpoint: "ws://localhost:6032",
-      realm: "gittalk",
+      endpoint: 'wss://api.workshop.pattig.rocks',
+      realm: 'gittalk',
       serializer: new BrowserMSGPackSerializer(),
       transport: BrowserWebSocketTransport,
       authProvider: new TicketAuthProvider(username, async () => {
-        return { signature: ""};
+        return { signature: '' };
       }),
     });
-    store.setState({
+    localStore.setState({
       ...state,
       connState: EConnectionState.Connecting,
       message: ['Connecting to server...'],
     });
     try {
-      const details = await connection.Open()
-      connection.OnClose().then((closeInfo) => {
-        store.setState({
-          ...store.getState(),
+      const details = await connection.Open();
+      connection.OnClose().then(() => {
+        localStore.setState({
+          ...localStore.getState(),
           connState: EConnectionState.Disconnected,
         });
       });
-      const instanceId = (details.authextra || {})["containerid"] || null;
-      const ready = (details.authextra || {})["ready"] || false;
-      store.setState({
-        ...store.getState(),
+      const instanceId = (details.authextra || {}).containerid || null;
+      const ready = (details.authextra || {}).ready || false;
+      localStore.setState({
+        ...localStore.getState(),
         connState: ready ? EConnectionState.Connected : EConnectionState.Connecting,
         username: details.authid || username,
         instanceid: instanceId,
-        connection: connection,
-        message: [...store.getState().message, 'Reserving some storage...'],
+        connection,
+        message: [...localStore.getState().message, 'Reserving some storage...'],
       });
       await connection.Subscribe<[string], WampDict>(`rocks.git.${instanceId}.state`, ([stateMessage]) => {
-        console.log('got state message', stateMessage);
-        const oldState = store.getState();
+        const oldState = localStore.getState();
         switch (stateMessage) {
           case 'pvcbound': {
-            store.setState({
+            localStore.setState({
               ...oldState,
               message: [...oldState.message, 'Spinning up your container...'],
             });
             break;
           }
           case 'podrunning': {
-            store.setState({
+            localStore.setState({
               ...oldState,
               message: [...oldState.message, 'Initializing some beautiful examples...'],
             });
             break;
           }
           case 'ready': {
-            store.setState({
+            localStore.setState({
               ...oldState,
               message: [],
               connState: EConnectionState.Connected,
@@ -77,7 +82,7 @@ export const actions = (store: Store<State>) => ({
             break;
           }
           default: {
-            store.setState({
+            localStore.setState({
               ...oldState,
               message: [...oldState.message, stateMessage],
             });
@@ -86,7 +91,7 @@ export const actions = (store: Store<State>) => ({
         }
       });
     } catch (e) {
-      store.setState({
+      localStore.setState({
         ...state,
         connState: EConnectionState.Error,
         errorMessage: `Server unreachable: ${e.toString()}`,
@@ -95,7 +100,7 @@ export const actions = (store: Store<State>) => ({
   },
   resetConn: (state: State) => {
     state.connection.Close();
-    store.setState({
+    localStore.setState({
       ...state,
       connection: null,
       instanceid: null,
