@@ -25,7 +25,7 @@ export const store = process.env.NODE_ENV === 'production' ?
 export const actions = (localStore: Store<State>) => ({
   connect: async (state: State, username: string) => {
     const connection = new Connection({
-      endpoint: 'wss://api.workshop.pattig.rocks',
+      endpoint: 'ws://localhost:6032',
       realm: 'gittalk',
       serializer: new BrowserMSGPackSerializer(),
       transport: BrowserWebSocketTransport,
