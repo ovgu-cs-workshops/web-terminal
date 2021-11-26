@@ -1,4 +1,4 @@
-FROM node:11-alpine as builder
+FROM node:16-alpine as builder
 
 WORKDIR /web-terminal
 
@@ -8,7 +8,7 @@ RUN npm ci
 ADD . /web-terminal/
 RUN npm run build
 
-FROM nginx:1.16-alpine
+FROM nginx:1.21-alpine
 
 ARG configuration=production
 COPY --from=builder /web-terminal/dist/ /usr/share/nginx/html
