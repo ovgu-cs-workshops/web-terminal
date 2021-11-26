@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -36,18 +36,23 @@ module.exports = {
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ['dist'],
+    }),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       title: 'WebTerm',
       template: 'public/index.html'
     }),
-
   ],
   optimization: {
     minimizer: [new TerserPlugin()],
   },
   resolve: {
+    fallback: {
+      'util': false,
+      'assert': false,
+    },
     alias: {
       '@app': path.resolve(__dirname, 'src'),
       '@components': path.resolve(__dirname, 'src/components'),

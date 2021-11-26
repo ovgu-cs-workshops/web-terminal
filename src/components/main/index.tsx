@@ -1,11 +1,12 @@
+
+// tslint:disable: no-console
 import { Component, h } from 'preact';
 import { Terminal } from 'xterm';
+import { FitAddon } from 'xterm-addon-fit';
 import * as WebfontLoader from 'xterm-webfont';
 
 import { EConnectionState, MainConnState } from '@app/types';
 import { Connection, ISubscription } from '@verkehrsministerium/kraftfahrstrasse';
-
-Terminal.applyAddon(WebfontLoader);
 
 import './index.scss';
 
@@ -30,6 +31,8 @@ export class TerminalComponent extends Component<{instance: string, connection: 
       fontFamily: 'Hack',
       rendererType: 'dom',
     });
+    terminal.loadAddon(new FitAddon());
+    terminal.loadAddon(new WebfontLoader());
     // Subscribe to the topics
     (async () => {
       await (terminal as any).loadWebfontAndOpen(elem);
@@ -65,13 +68,13 @@ export class TerminalComponent extends Component<{instance: string, connection: 
       const width = this.state.term.cols;
       const args = [this.state.id, width - 2, height];
       await this.props.connection.Call(`rocks.git.tui.${this.props.instance}.create`, args)[0];
-      this.state.term.on('resize', ({rows, cols}) => {
+      this.state.term.onResize(({rows, cols}) => {
         this.props.connection.Call(`${baseUrl}.resize`, [cols - 2, rows])[0]
         .catch(err => console.log('Failed to resize tui:', err));
       });
-      this.state.term.on('data', data => {
-        data = this.state.encoder.encode(data);
-        this.props.connection.Call(`${baseUrl}.input`, [data.buffer])[0]
+      this.state.term.onData(data => {
+        const d2 = this.state.encoder.encode(data);
+        this.props.connection.Call(`${baseUrl}.input`, [d2.buffer])[0]
         .catch(err => console.log('Failed to send data to tui:', err));
       });
     })().catch(err => {
@@ -96,7 +99,7 @@ export class TerminalComponent extends Component<{instance: string, connection: 
       }
     })().catch(err => console.log('Failed to unsubscribe from out/exit:', err));
     if (!!this.state.term) {
-      this.state.term.destroy();
+      this.state.term.dispose();
     }
   }
 }

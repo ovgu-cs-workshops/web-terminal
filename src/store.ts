@@ -5,10 +5,10 @@ import { EConnectionState, State } from '@app/types';
 import {
   BrowserWebSocketTransport,
   Connection,
+  JSONSerializer,
   TicketAuthProvider,
   WampDict,
 } from '@verkehrsministerium/kraftfahrstrasse';
-import { BrowserMSGPackSerializer } from '@verkehrsministerium/kraftfahrstrasse/build/module/serialize/BrowserMSGPack';
 
 const initialState: State = {
   instanceid: null,
@@ -27,7 +27,7 @@ export const actions = (localStore: Store<State>) => ({
     const connection = new Connection({
       endpoint: 'ws://localhost:6032',
       realm: 'gittalk',
-      serializer: new BrowserMSGPackSerializer(),
+      serializer: new JSONSerializer(),
       transport: BrowserWebSocketTransport,
       authProvider: new TicketAuthProvider(username, async () => {
         return { signature: '' };

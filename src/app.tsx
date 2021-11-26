@@ -1,18 +1,16 @@
-import { h } from 'preact'
-import { connect, Provider } from 'unistore/preact'
-import { actions, store } from '@app/store'
-import { Actions, State } from '@app/types'
-import { TopBarComponent } from '@components/topbar'
-import { MainComponent } from '@components/main'
-import { Terminal } from 'xterm';
-import * as fit from 'xterm/lib/addons/fit/fit';
+import { h } from 'preact';
+import { connect, Provider } from 'unistore/preact';
+
+import { actions, store } from '@app/store';
+import { Actions, State } from '@app/types';
+
+import { MainComponent } from '@components/main';
+import { TopBarComponent } from '@components/topbar';
 import '@styles/main.scss';
 
-Terminal.applyAddon(fit);
-
-const App = connect<{}, State & Actions, State & Actions>(x => x, actions)(
+const App = connect<{}, State & Actions, State & Actions, State & Actions>(x => x, actions)(
   (props: State & Actions) =>
-  <div class="layout">
+  <div class='layout'>
     <TopBarComponent connect={props.connect} connState={props.connState} />
     <MainComponent
       connState={props.connState}
@@ -21,7 +19,7 @@ const App = connect<{}, State & Actions, State & Actions>(x => x, actions)(
       connection={props.connection}
       message={props.message}
       resetConn={props.resetConn} />
-  </div>
+  </div>,
 );
 
 export default () => (
