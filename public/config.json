@@ -1,0 +1,4 @@
+{
+  "endpoint": "ws://localhost:6032",
+  "realm": "gittalk"
+}

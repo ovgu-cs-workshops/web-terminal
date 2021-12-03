@@ -24,9 +24,10 @@ export const store = process.env.NODE_ENV === 'production' ?
 
 export const actions = (localStore: Store<State>) => ({
   connect: async (state: State, username: string) => {
+    const cfg = await fetch('/config.json?id=' + Date.now()).then(resp => resp.json());
     const connection = new Connection({
-      endpoint: 'ws://localhost:6032',
-      realm: 'gittalk',
+      endpoint: cfg.endpoint,
+      realm: cfg.realm,
       serializer: new JSONSerializer(),
       transport: BrowserWebSocketTransport,
       authProvider: new TicketAuthProvider(username, async () => {
