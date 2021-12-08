@@ -1,6 +1,6 @@
 {
   "name": "web-terminal",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "private": true,
   "description": "WAMP based web terminal backed by docker",
   "author": "Martin Koppehel <martin@embedded.enterprises>",
