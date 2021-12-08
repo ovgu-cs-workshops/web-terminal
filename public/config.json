@@ -1,4 +1,4 @@
 {
-  "endpoint": "ws://localhost:6032",
+  "endpoint": "wss://t-git-ws-api.remote-lab.rocks",
   "realm": "gittalk"
 }

@@ -31,32 +31,36 @@ export class TerminalComponent extends Component<{instance: string, connection: 
       fontFamily: 'Hack',
       rendererType: 'dom',
     });
-    terminal.loadAddon(new FitAddon());
+    const fit = new FitAddon();
+    terminal.loadAddon(fit);
     terminal.loadAddon(new WebfontLoader());
     // Subscribe to the topics
     (async () => {
       await (terminal as any).loadWebfontAndOpen(elem);
-      (terminal as any).fit();
+      fit.fit();
 
       const resizeFunc = () => (terminal as any).fit();
       window.addEventListener('resize', resizeFunc);
+
+      const id = Math.random().toString(36).substring(7);
 
       // Update the state
       this.setState({
         ...this.state,
         decoder: new (window as any).TextDecoder(),
         encoder: new (window as any).TextEncoder(),
-        id: Math.random().toString(36).substring(7),
         term: terminal,
+        id,
         resizeFunc,
       });
 
-      const baseUrl = `rocks.git.tui.${this.props.instance}.${this.state.id}`;
+      const baseUrl = `rocks.git.tui.${this.props.instance}.${id}`;
       const outSub = await this.props.connection.Subscribe(`${baseUrl}.out`, (a: [ArrayBuffer]) => {
         const data = this.state.decoder.decode(a[0], {stream: true});
         this.state.term.write(data);
       });
       const exitSub = await this.props.connection.Subscribe(`${baseUrl}.exit`, () => {
+        console.log('CONSOLE_EXIT => RESET');
         this.props.resetConn();
       });
       this.setState({
@@ -66,7 +70,7 @@ export class TerminalComponent extends Component<{instance: string, connection: 
       });
       const height = this.state.term.rows;
       const width = this.state.term.cols;
-      const args = [this.state.id, width - 2, height];
+      const args = [id, width - 2, height];
       await this.props.connection.Call(`rocks.git.tui.${this.props.instance}.create`, args)[0];
       this.state.term.onResize(({rows, cols}) => {
         this.props.connection.Call(`${baseUrl}.resize`, [cols - 2, rows])[0]
@@ -78,6 +82,7 @@ export class TerminalComponent extends Component<{instance: string, connection: 
         .catch(err => console.log('Failed to send data to tui:', err));
       });
     })().catch(err => {
+      console.log(err);
       terminal.clear();
       terminal.writeln('Failed to initialize server connection!');
       terminal.writeln(err);

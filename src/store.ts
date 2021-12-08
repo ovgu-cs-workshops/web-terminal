@@ -3,9 +3,9 @@ import devtools from 'unistore/devtools';
 
 import { EConnectionState, State } from '@app/types';
 import {
+  BrowserMSGPackSerializer,
   BrowserWebSocketTransport,
   Connection,
-  JSONSerializer,
   TicketAuthProvider,
   WampDict,
 } from '@verkehrsministerium/kraftfahrstrasse';
@@ -28,8 +28,9 @@ export const actions = (localStore: Store<State>) => ({
     const connection = new Connection({
       endpoint: cfg.endpoint,
       realm: cfg.realm,
-      serializer: new JSONSerializer(),
+      serializer: new BrowserMSGPackSerializer(),
       transport: BrowserWebSocketTransport,
+      logFunction: () => { /* nothing to do */ },
       authProvider: new TicketAuthProvider(username, async () => {
         return { signature: '' };
       }),
